@@ -27,9 +27,11 @@ This problem should be solvable without touching the codebase. That means this i
 
 There was a similiar case, which occured during the work on [aufgabe1](https://gitlab.christianratz.de/christian/hk-test-aufgabe-1). 
 
-The endpoint `PUT https://hk-test-api.herokuapp.com/albums/:id` needs an `Accept`-header, such as `Accept: application/json` or `Accept: */*`, otherwise the api will through also an internal server error (HTTP-Statuscode `500`). The difference in this case is, that the server always returned an internal server error, as soon as there will be set an explicit header. 
+The endpoint `PUT https://hk-test-api.herokuapp.com/albums/:id` needs an `Accept`-header, such as `Accept: application/json` or `Accept: */*`, otherwise the api will through also an internal server error (HTTP-Statuscode `500`). 
 
-In my opinion, this additional header, so an additional constraint for the api-endpoint, is more stable and the frontend, which is requesting the api-endpoint can be sure, that the response from the api is reliable and in the desired content type.
+The difference in this case is, that the server always returned an internal server error, as soon as there will be set an explicit header. 
+
+In my opinion, this additional header (with an explicit content type such as `Accept: application/json`), so an additional constraint for the api-endpoint, is more stable and the frontend, which is requesting the api-endpoint can be sure, that the response from the api is reliable and in the desired content type.
 
 In this case, for task2, the server returns intermittently an internal server error.
 
