@@ -54,3 +54,22 @@ Besides it could be also a misconfiguration of apache or nginx. Also when the `f
 The underlying infrastructure behind an application is simply overloaded or to weak, because of high user-load or exceeded memory. In this case users can also possibly face issues with intermittent internal server errors.
 * solution: use a more powerful server or switch to another subscription or another server provider
 
+### UPDATE: Alternative: Handle unreliable API on frontend-side (within the application)
+
+In my opinion we have the following solutions for an unreliable api: 
+
+When sending a request to the api and it will return an error like this, we could implement an retry-functionality for requests, with an increasing delay each time the request fails. 
+
+Extending this with an additional check after an executed request, so for example the album administrator: 
+We send a POST-Request / or PUT-Request to insert or update an entity. The api response failed -> internal server error.
+In this case, we can not be sure, if the entity was already inserted or updated, so before we retry the request, we could send another request to get the information about the inserted or updated entity and check if its already exists or has already been updated. If that’s not the case, we retry the failed request again.
+
+The retry-options should have an “exit”-case, so maybe after five failed requests, definitely inform / alarm about those five failed request and try to fix it - 1. inform the users of your application, 2. check again the api-documentation for any changes, 3. inform the api-provider, and so on..
+
+If the api-provider is not fixing errors or not at least trying to fix them, it could be also a possibility to review the usage or necessity of this api until the errors are handled.
+
+No matter which way you take to handle an unreliable api or another unreliable module of your application, the goal which should be focused on, that you provide an application which is reliable. 
+
+Another completely different case, could be, when the api-provider updated the logic behind the api-endpoint - which would be a really bad decision, best practice for apis is definitely versioning.
+The difference is, that these cases could be mostly identified by an 4xx error.
+
